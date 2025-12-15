@@ -1,7 +1,0 @@
-root = true
-
-[*.cs]
-dotnet_diagnostic.CS8019.severity = warning
-dotnet_style_prefer_auto_properties = true:warning
-indent_style = space
-indent_size = 4

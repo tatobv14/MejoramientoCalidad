@@ -1,26 +1,26 @@
+using Microsoft.EntityFrameworkCore;
+using ProyectoMejoramiento.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddControllersWithViews();
+
+var cadenaConexion = builder.Configuration.GetConnectionString("ConexionInventario");
+
+builder.Services.AddDbContext<InventarioContexto>(options =>
+    options.UseMySql(cadenaConexion, ServerVersion.AutoDetect(cadenaConexion)));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapStaticAssets();
-app.MapRazorPages()
-   .WithStaticAssets();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Productos}/{action=Index}/{id?}");
 
 app.Run();
